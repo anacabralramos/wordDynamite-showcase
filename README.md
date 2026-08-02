@@ -32,9 +32,9 @@
 <p align="center">
   <img src="assets/HomeScreen.png" alt="Home screen" width="200" />
   &nbsp;&nbsp;
-  <img src="assets/GameScreen.png" alt="Game screen" width="200" />
+  <img src="assets/GameBoardLevel1.png" alt="Game screen" width="200" />
   &nbsp;&nbsp;
-  <img src="assets/GameBoard.gif" alt="Gameplay" width="200" />
+  <img src="assets/GameBoardLevel2.gif" alt="Gameplay" width="200" />
   &nbsp;&nbsp;
   <img src="assets/Deck.gif" alt="Deck" width="200" />
 </p>
