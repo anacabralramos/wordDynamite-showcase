@@ -5,11 +5,11 @@
 <h1 align="center">Word Dynamite</h1>
 
 <p align="center">
-  <strong>Encontre as palavras. Acenda o pavio. Não deixe o tempo explodir.</strong>
+  <strong>Find the words. Light the fuse. Don't let time explode.</strong>
 </p>
 
 <p align="center">
-  Puzzle de palavras com dinamite, gelo e bônus — offline-first, sincronizado na nuvem e animado com Skia.
+  A word puzzle with dynamite, ice, and bonuses — offline-first, cloud-synced, and animated with Skia.
 </p>
 
 <p align="center">
@@ -27,36 +27,36 @@
 
 ---
 
-## O jogo
+## The game
 
-**Word Dynamite** é um word puzzle em que cada nível é uma grade de letras esperando para ser desvendada. Monte as palavras certas, acumule **dinamites**, quebre o **gelo** e dispute o melhor tempo — com efeitos visuais de pavio, fumaça e explosão feitos em **Shopify Skia**.
+**Word Dynamite** is a word puzzle where each level is a letter grid waiting to be solved. Build the right words, collect **dynamites**, break the **ice**, and chase the best time — with fuse, smoke, and explosion effects built in **Shopify Skia**.
 
-|                     |                                                                                               |
-| ------------------- | --------------------------------------------------------------------------------------------- |
-| **Jogue offline**   | Progresso e saldo ficam no SQLite criptografado; a fila de sync sobe tudo quando a rede volta |
-| **Salve na nuvem**  | Convidado, e-mail ou Google — login sincroniza identidade e histórico de níveis               |
-| **Evolua no Deck**  | Blocos de níveis, histórico e retomada do ponto em que parou                                  |
-| **Ganhe dinamites** | Bônus de partida, anúncios recompensados e economia validada no backend                       |
+|                     |                                                                                                    |
+| ------------------- | -------------------------------------------------------------------------------------------------- |
+| **Play offline**    | Progress and balance live in encrypted SQLite; the sync queue uploads everything when the network returns |
+| **Save to the cloud** | Guest, email, or Google — sign-in syncs identity and level history                                |
+| **Progress in Deck** | Level blocks, history, and resume from where you left off                                         |
+| **Earn dynamites**  | Match bonuses, rewarded ads, and economy validated on the backend                                  |
 
 ---
 
 ## Stack
 
-| Camada       | Tecnologia                                                |
+| Layer        | Technology                                                |
 | ------------ | --------------------------------------------------------- |
 | App          | React Native **0.78** · React **19** · TypeScript         |
 | UI & motion  | Reanimated · Gesture Handler · Linear Gradient · **Skia** |
-| Estado       | Zustand · Contexts (Auth, Sound, Language, Error)         |
-| Persistência | **op-sqlite** + **SQLCipher**                             |
-| Auth         | Firebase Auth (anônimo, e-mail, Google)                   |
-| Backend      | API REST (Axios) + fila de sync local                     |
+| State        | Zustand · Contexts (Auth, Sound, Language, Error)         |
+| Persistence  | **op-sqlite** + **SQLCipher**                             |
+| Auth         | Firebase Auth (anonymous, email, Google)                  |
+| Backend      | REST API (Axios) + local sync queue                       |
 | Ads          | Google Mobile Ads (banner, interstitial, rewarded)        |
 | Analytics    | Firebase Analytics                                        |
 | i18n         | i18next · react-i18next · react-native-localize           |
 
 ---
 
-## Arquitetura (visão rápida)
+## Architecture (quick look)
 
 ```text
 ┌─────────────────────────────────────────────────────────────┐
@@ -71,25 +71,25 @@
 └──────────────────┴──────────────────┴───────────────────────┘
 ```
 
-**Offline-first:** partidas e gastos de dinamite entram numa fila local. O `SyncWorker` processa por prioridade (ex.: `SYNC_LEVEL_PROGRESS`), com retry e tratamento de erros fatais de rede/servidor.
+**Offline-first:** matches and dynamite spends go into a local queue. `SyncWorker` processes by priority (e.g. `SYNC_LEVEL_PROGRESS`), with retry and handling for fatal network/server errors.
 
 **Path aliases** (`src/`): `@screens`, `@components`, `@services`, `@stores`, `@gt/api`, `@gt/database`, `@gt/firebase`, `@animations`, …
 
 ---
 
-## Pré-requisitos
+## Prerequisites
 
 - **Node.js** ≥ 18
-- **Yarn** (recomendado) ou npm
-- Ambiente React Native conforme o guia oficial: [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment)
-- **Android:** Android Studio, SDK, emulador/dispositivo, **JDK 17**
+- **Yarn** (recommended) or npm
+- React Native environment per the official guide: [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment)
+- **Android:** Android Studio, SDK, emulator/device, **JDK 17**
 - **iOS** (macOS): Xcode, CocoaPods (`bundle install` + `pod install`)
 
 ---
 
-## Começando
+## Getting started
 
-### 1. Clone e instale
+### 1. Clone and install
 
 ```bash
 git clone https://github.com/anacabralramos/word-dynamite-react-native-app.git
@@ -97,19 +97,19 @@ cd word-dynamite-react-native-app
 yarn install
 ```
 
-### 2. Variáveis de ambiente
+### 2. Environment variables
 
 ```bash
 cp .env.example .env
 ```
 
-Preencha o `.env` (não versionado):
+Fill in `.env` (not versioned):
 
 ```env
 # SQLite
 DB_FILE_NAME=game_database.db
 
-# Firebase (Console → Configurações do projeto)
+# Firebase (Console → Project settings)
 FIREBASE_API_KEY=...
 FIREBASE_AUTH_DOMAIN=...
 FIREBASE_PROJECT_ID=...
@@ -118,32 +118,32 @@ FIREBASE_MESSAGING_SENDER_ID=...
 FIREBASE_APP_ID=...
 FIREBASE_MEASUREMENT_ID=...
 
-# Google Sign-In (opcional)
+# Google Sign-In (optional)
 WEB_CLIENT_ID=....apps.googleusercontent.com
 ```
 
-### 3. Firebase nativo
+### 3. Native Firebase
 
-Baixe do Firebase Console e coloque:
+Download from the Firebase Console and place:
 
-| Plataforma | Arquivo                            |
-| ---------- | ---------------------------------- |
-| Android    | `android/app/google-services.json` |
-| iOS        | `ios/GoogleService-Info.plist`     |
+| Platform | File                               |
+| -------- | ---------------------------------- |
+| Android  | `android/app/google-services.json` |
+| iOS      | `ios/GoogleService-Info.plist`     |
 
-Ative Authentication (Anonymous, Email/Password e, se quiser, Google).
+Enable Authentication (Anonymous, Email/Password, and Google if you want).
 
-### 4. API local
+### 4. Local API
 
-Por padrão o client aponta para:
+By default the client points to:
 
 ```text
 http://localhost:3000/api
 ```
 
-Ajuste em `src/gateways/api/api.ts` se o backend estiver em outro host (no Android emulator use `10.0.2.2` em vez de `localhost`).
+Adjust in `src/gateways/api/api.ts` if the backend is on another host (on the Android emulator use `10.0.2.2` instead of `localhost`).
 
-### 5. iOS (primeira vez / deps nativas)
+### 5. iOS (first time / native deps)
 
 ```bash
 cd ios
@@ -152,7 +152,7 @@ bundle exec pod install
 cd ..
 ```
 
-### 6. Rodar
+### 6. Run
 
 ```bash
 # Terminal 1 — Metro
@@ -160,56 +160,56 @@ yarn start
 
 # Terminal 2 — device / emulator
 yarn android
-# ou
+# or
 yarn ios
 ```
 
-Também dá para abrir `android/` no Android Studio ou o `.xcworkspace` no Xcode.
+You can also open `android/` in Android Studio or the `.xcworkspace` in Xcode.
 
 ---
 
 ## Scripts
 
-| Comando        | O que faz                        |
+| Command        | What it does                     |
 | -------------- | -------------------------------- |
 | `yarn start`   | Metro bundler                    |
-| `yarn android` | Sobe no Android                  |
-| `yarn ios`     | Sobe no iOS                      |
+| `yarn android` | Run on Android                   |
+| `yarn ios`     | Run on iOS                       |
 | `yarn lint`    | ESLint                           |
 | `yarn test`    | Jest                             |
-| `postinstall`  | Aplica patches (`patch-package`) |
+| `postinstall`  | Apply patches (`patch-package`)  |
 
 ---
 
-## Estrutura do `src/`
+## `src/` structure
 
 ```text
 src/
 ├── screens/          # Home, Game, Deck, Login, Resume, …
-├── components/       # UI compartilhada
+├── components/       # Shared UI
 ├── services/         # Auth, Levels, GameLifecycle, sync/
 ├── gateways/
 │   ├── api/          # HTTP
-│   ├── database/     # SQLite + repositórios
+│   ├── database/     # SQLite + repositories
 │   └── firebase/     # Auth / Analytics
-├── stores/           # Zustand (sessão, nível, ads)
+├── stores/           # Zustand (session, level, ads)
 ├── contexts/         # Auth, Sound, Language, Error
 ├── navigation/       # Root stack
 ├── i18n/             # pt-BR · en-US · es
-├── animations/       # helpers Reanimated
-├── theme/            # tokens visuais
-└── assets/           # ícones, sons, backgrounds
+├── animations/       # Reanimated helpers
+├── theme/            # Visual tokens
+└── assets/           # Icons, sounds, backgrounds
 ```
 
 ---
 
-## Destaques de produto
+## Product highlights
 
-- **Guest → conta:** jogue como convidado e vincule progresso depois (e-mail ou Google)
-- **Economia de dinamites:** ledger local + validação no `POST /levels/progress`
-- **Anúncios:** banner, interstitial e rewarded (AdMob; IDs de teste no `app.json` em dev)
-- **Som e trilha:** mute independente de SFX e trilha
-- **Splash:** `react-native-bootsplash` — para regenerar a partir do logo:
+- **Guest → account:** play as a guest and link progress later (email or Google)
+- **Dynamite economy:** local ledger + validation on `POST /levels/progress`
+- **Ads:** banner, interstitial, and rewarded (AdMob; test IDs in `app.json` in dev)
+- **Sound and music:** independent mute for SFX and soundtrack
+- **Splash:** `react-native-bootsplash` — to regenerate from the logo:
 
 ```bash
 npx react-native-bootsplash generate assets/bootsplash/logo.png \
@@ -221,19 +221,19 @@ npx react-native-bootsplash generate assets/bootsplash/logo.png \
 
 ## Troubleshooting
 
-| Problema                | Tente                                                              |
+| Issue                   | Try                                                                |
 | ----------------------- | ------------------------------------------------------------------ |
-| Metro / cache estranho  | `yarn start --reset-cache`                                         |
-| Build Android           | `cd android && ./gradlew clean`                                    |
-| Build iOS               | `cd ios && bundle exec pod install` + clean no Xcode               |
-| Env não carrega         | Confirme `.env` na raiz e reinicie o Metro (`react-native-dotenv`) |
-| API no emulador Android | Troque `localhost` por `10.0.2.2` no `baseURL`                     |
+| Metro / weird cache     | `yarn start --reset-cache`                                         |
+| Android build           | `cd android && ./gradlew clean`                                    |
+| iOS build               | `cd ios && bundle exec pod install` + clean in Xcode               |
+| Env not loading         | Confirm `.env` at the root and restart Metro (`react-native-dotenv`) |
+| API on Android emulator | Replace `localhost` with `10.0.2.2` in `baseURL`                   |
 
 ---
 
-## Documentação interna
+## Internal docs
 
-- [`docs/user-sync-vs-levels-progress.md`](docs/user-sync-vs-levels-progress.md) — quando usar `/user/sync` vs `/levels/progress`
+- [`docs/user-sync-vs-levels-progress.md`](docs/user-sync-vs-levels-progress.md) — when to use `/user/sync` vs `/levels/progress`
 
 ---
 
@@ -248,5 +248,5 @@ npx react-native-bootsplash generate assets/bootsplash/logo.png \
 ---
 
 <p align="center">
-  <sub>Feito com pavio curto e café longo.</sub>
+  <sub>Built with a short fuse and a long coffee.</sub>
 </p>
